@@ -69,8 +69,12 @@ for product in data["products"]:
 # Compare standard pricing between two products
 products = data["products"]
 
-if len(products) == 2:
+comparison_result = {
+    "status": "not_comparable",
+    "reason": "Two products with matching amounts and terms are required"
+}
 
+if len(products) == 2:
     a = products[0]
     b = products[1]
 
@@ -91,6 +95,24 @@ if len(products) == 2:
             b["origination_fee_pln"]
             - a["origination_fee_pln"]
         )
+        comparison_result = {
+            "status": "partial_comparison",
+            "comparison_basis": "standard_pricing_only",
+            "brand_a": a["brand"],
+            "brand_b": b["brand"],
+            "loan_amount_pln": a["loan_amount"],
+            "term_months": a["term_months"],
+            "nominal_rate_difference_pp": round(rate_difference, 2),
+            "contract_fee_difference_pln": round(fee_difference, 2),
+            "lower_rate_higher_fee_signal": (
+                rate_difference > 0 and fee_difference > 0
+            ),
+            "limitations": [
+                "Promotional campaigns excluded",
+                "Total borrowing cost not calculated",
+                "APR and administration fees are unknown"
+            ]
+        }
 
         print(f"Nominal rate difference (A minus B): {rate_difference:.2f} percentage points")
         print(f"Contract fee difference (B minus A): {fee_difference:.2f} PLN")
@@ -109,3 +131,73 @@ if len(products) == 2:
     else:
         print("Products have different amounts or terms.")
         print("Direct pricing comparison is not appropriate.")
+# Data quality and evidence checks
+
+print("\n=== DATA QUALITY REPORT ===")
+
+quality_results = []
+
+for product in data["products"]:
+
+    issues = []
+
+    # Check whether the information is real market evidence
+    if data["data_origin"] == "synthetic":
+        issues.append("Synthetic data - not verified market research")
+
+    # Check published APR
+    if product.get("published_apr_pct") is None:
+        issues.append("Published APR: missing")
+
+    # Check monthly administration fee
+    if product.get("monthly_admin_fee_pln") is None:
+        issues.append("Monthly administration fee: unknown")
+
+    # Check evidence source
+    if not product.get("source_url"):
+        issues.append("Source: missing")
+
+    # Check promotional validity
+    for promo in product.get("promotions", []):
+
+        if (
+            promo.get("valid_from") is None
+            or promo.get("valid_until") is None
+        ):
+            issues.append(
+                f"Promotion ({promo['type']}): validity dates unknown"
+            )
+
+    # Display findings
+    print(f"\n{product['brand']}")
+
+    for issue in issues:
+        print(f"- {issue}")
+
+    print(f"Total data quality flags: {len(issues)}")
+    quality_results.append({
+        "brand": product["brand"],
+        "issues": issues,
+        "issue_count": len(issues)
+    })
+# Build structured research report
+report = {
+    "market": data["market"],
+    "product_type": data["product_type"],
+    "data_origin": data["data_origin"],
+    "products": data["products"],
+    "comparison": comparison_result,
+    "data_quality": quality_results
+}
+
+# Define output location
+output_file = Path("data/output/research_report.json")
+
+# Create output directory if necessary
+output_file.parent.mkdir(parents=True, exist_ok=True)
+
+# Save report as JSON
+with open(output_file, "w", encoding="utf-8") as file:
+    json.dump(report, file, indent=2, ensure_ascii=False)
+
+print(f"\nResearch report saved: {output_file}")
