@@ -1,0 +1,25 @@
+{
+  "market": "PL",
+  "segment": "non_bank",
+  "product_type": "unsecured_instalment_loan",
+  "lenders": [
+    {
+      "brand": "Provident",
+      "source_url": "https://www.provident.pl/",
+      "product_classification": "unsecured_instalment_loan",
+      "research_status": "pending"
+    },
+    {
+      "brand": "Wonga",
+      "source_url": "https://www.wonga.pl/na-raty",
+      "product_classification": "unsecured_instalment_loan",
+      "research_status": "pending"
+    },
+    {
+      "brand": "Smartney",
+      "source_url": "https://www.smartney.pl/",
+      "product_classification": "unsecured_instalment_loan",
+      "research_status": "pending"
+    }
+  ]
+}

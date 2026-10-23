@@ -1,0 +1,9 @@
+**Observed facts (illustrative synthetic data only):** For a PLN 10,000, 24-month annuity loan, Brand A lists a fixed nominal rate of 11% and no origination fee; Brand B lists 10% and a PLN 500 fee allocated across instalments. Thus, Brand B has a 1 percentage-point lower nominal rate but a PLN 500 higher standard fee. New-customer promotions are listed for both: A waives interest for instalments 1–3, while B waives its contract fee. Their dates and full conditions are unknown.
+
+**Potential business implications (hypotheses):** A lower headline rate may attract rate-focused borrowers, while an upfront or allocated fee could offset some of that appeal. A’s temporary interest waiver may improve its offer for eligible new customers; B’s fee waiver may reduce its standard-fee disadvantage. Neither promotion’s actual effect on total repayment can be established from these data.
+
+**Product opportunity:** Test a transparent, fee-free offer with a clear all-in repayment amount, potentially alongside a time-limited introductory incentive. This is a hypothesis to validate, not evidence of an unmet market need.
+
+**Why conclusions are limited:** APRs and monthly administration fees are missing, total borrowing costs have not been calculated, sources are absent, and promotional validity and detailed eligibility conditions are unknown. The data are synthetic and do not establish real market pricing. Therefore, it is not possible to determine which product is cheaper overall.
+
+**Next research step:** Verify current offers and promotion terms directly from reliable lender materials, then compare APR and total amount repayable for the same loan amount and term, both under standard pricing and for eligible promotional customers.

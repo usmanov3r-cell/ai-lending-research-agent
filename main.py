@@ -30,6 +30,28 @@ with open(data_file, "r", encoding="utf-8") as file:
 if args.country.upper() != data["market"] or args.product != data["product_type"]:
     parser.error("This dataset only supports PL / unsecured_instalment_loan")
 
+# Load the source registry for the selected country
+registry_file = Path("markets") / args.country.lower() / "lenders.json"
+
+with open(registry_file, "r", encoding="utf-8") as file:
+    registry = json.load(file)
+
+# Verify that the registry matches the requested research
+if (
+    registry["market"] != args.country.upper()
+    or registry["product_type"] != args.product
+):
+    parser.error("Source registry does not match country or product")
+
+# Display research targets
+print("\n=== RESEARCH TARGETS ===")
+
+for lender in registry["lenders"]:
+    print(f"\nBrand: {lender['brand']}")
+    print(f"Research status: {lender['research_status']}")
+    print(f"Source: {lender['source_url']}")
+
+print("\nNOTE: These are research candidates, not verified product records.")
 # Display competitor information
 print("\nData origin:", data["data_origin"])
 print("\nCompetitors:")
