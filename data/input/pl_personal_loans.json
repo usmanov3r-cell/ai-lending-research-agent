@@ -1,0 +1,59 @@
+{
+  "market": "PL",
+  "product_type": "unsecured_instalment_loan",
+  "currency": "PLN",
+  "data_origin": "synthetic",
+  "products": [
+    {
+      "brand": "Example Brand A",
+      "lender": "Example Lender A",
+      "loan_amount": 10000,
+      "term_months": 24,
+      "nominal_interest_rate_pct": 11.0,
+      "interest_rate_type": "fixed",
+      "published_apr_pct": null,
+      "origination_fee_pln": 0,
+      "contract_fee_treatment": "not_applicable",
+      "monthly_admin_fee_pln": null,
+      "repayment_type": "annuity",
+      "source_url": null,
+      "promotions": [
+        {
+          "type": "interest_waiver",
+          "promotional_interest_rate_pct": 0,
+          "start_installment": 1,
+          "end_installment": 3,
+          "eligibility": "new_customers",
+          "valid_from": null,
+          "valid_until": null,
+          "verification_status": "synthetic"
+        }
+      ]
+    },
+    {
+      "brand": "Example Brand B",
+      "lender": "Example Lender B",
+      "loan_amount": 10000,
+      "term_months": 24,
+      "nominal_interest_rate_pct": 10.0,
+      "interest_rate_type": "fixed",
+      "published_apr_pct": null,
+      "origination_fee_pln": 500,
+      "contract_fee_treatment": "allocated_within_instalments",
+      "monthly_admin_fee_pln": null,
+      "repayment_type": "annuity",
+      "source_url": null,
+      "promotions": [
+        {
+          "type": "contract_fee_waiver",
+          "standard_fee_pln": 500,
+          "promotional_fee_pln": 0,
+          "eligibility": "new_customers",
+          "valid_from": null,
+          "valid_until": null,
+          "verification_status": "synthetic"
+        }
+      ]
+    }
+  ]
+}
