@@ -1,0 +1,46 @@
+{
+  "market": "PL",
+  "currency": "PLN",
+  "data_origin": "public_lender_disclosure",
+  "products": [
+    {
+      "brand": "Provident",
+      "lender": "Provident Polska S.A.",
+      "product_name": "Pożyczka Samoobsługowa naCoDzień",
+      "product_type": "unsecured_instalment_loan",
+      "channel": "online",
+      "customer_type": null,
+      "loan_amount_min_pln": 1000,
+      "loan_amount_max_pln": 30000,
+      "repayment_frequency": "monthly",
+      "promotions": null,
+      "representative_example": {
+        "loan_amount": 9300,
+        "term_months": 24,
+        "nominal_interest_rate_pct": 7.0,
+        "interest_rate_type": "fixed",
+        "published_apr_pct": 29.0,
+        "apr_status": "apr_reported",
+        "origination_fee_pln": 1887.88,
+        "preparation_fee_pln": 40.0,
+        "flexible_plan_fee_pln": 0.0,
+        "monthly_admin_fee_pln": null,
+        "contract_fee_treatment": "unknown",
+        "total_interest_pln": 766.98,
+        "total_credit_cost_pln": 2694.86,
+        "total_repayable_pln": 11994.86,
+        "regular_payment_pln": 499.79,
+        "regular_payment_count": 23,
+        "final_payment_pln": 499.69
+      },
+      "source": {
+        "url": "https://www.provident.pl/pozyczka-przez-internet",
+        "source_role": "published_representative_example",
+        "source_tier": 2,
+        "retrieved_at": "2026-10-23",
+        "representative_example_date": "2026-07-29",
+        "verification_status": "extracted_unverified"
+      }
+    }
+  ]
+}

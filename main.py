@@ -1,6 +1,7 @@
 import argparse
 import json
 from pathlib import Path
+from financial_checks import validate_product
 
 # Create the command-line interface
 parser = argparse.ArgumentParser(
@@ -11,6 +12,13 @@ parser = argparse.ArgumentParser(
 parser.add_argument("--country", required=True)
 parser.add_argument("--product", required=True)
 
+parser.add_argument(
+    "--data",
+    choices=["synthetic", "real"],
+    default="synthetic",
+    help="Choose synthetic test data or real lender research"
+)
+
 # Read the inputs
 args = parser.parse_args()
 
@@ -20,12 +28,23 @@ print(f"Country: {args.country}")
 print(f"Product: {args.product}")
 
 # Locate our lending data file
-data_file = Path("data/input/pl_personal_loans.json")
+if args.data == "synthetic":
+    data_file = Path("data/input/pl_personal_loans.json")
+else:
+    data_file = Path("data/normalized/pl_competitors.json")
 
 # Read the JSON file
 with open(data_file, "r", encoding="utf-8") as file:
     data = json.load(file)
+# Validate financial figures for real lending products
+if args.data == "real":
 
+    for product in data["products"]:
+
+        validation = validate_product(product)
+
+        # Attach validation results to the product
+        product["financial_validation"] = validation
 # Check that the selected market and product match our data
 if args.country.upper() != data["market"] or args.product != data["product_type"]:
     parser.error("This dataset only supports PL / unsecured_instalment_loan")
@@ -72,7 +91,7 @@ for product in data["products"]:
     print(f"Monthly admin fee: {admin_fee if admin_fee is not None else 'unknown'}")
 
     # Display promotional campaigns
-    for promo in product["promotions"]:
+    for promo in (product.get("promotions") or []):
 
         if promo["type"] == "interest_waiver":
             print(
@@ -93,7 +112,7 @@ products = data["products"]
 
 comparison_result = {
     "status": "not_comparable",
-    "reason": "Two products with matching amounts and terms are required"
+    "reason": "Direct comparison unavailable: representative loan amounts and terms differ."
 }
 
 if len(products) == 2:
@@ -163,6 +182,25 @@ for product in data["products"]:
 
     issues = []
 
+    # Additional checks for real market research
+    if data["data_origin"] != "synthetic":
+
+        # Unknown promotions are not the same as no promotions
+        if product.get("promotions") is None:
+            issues.append("Promotions: unknown, not confirmed absent")
+
+        # Check whether the source has been manually verified
+        source = product.get("source") or {}
+        verification = source.get("verification_status")
+
+        if verification != "source_checked":
+            issues.append(
+                f"Source verification pending: {verification or 'missing'}"
+            )
+
+        # Published APR is not the same as independently verified APR
+        if product.get("apr_status") == "apr_reported":
+            issues.append("APR: lender-reported, not independently recalculated")
     # Check whether the information is real market evidence
     if data["data_origin"] == "synthetic":
         issues.append("Synthetic data - not verified market research")
@@ -180,7 +218,7 @@ for product in data["products"]:
         issues.append("Source: missing")
 
     # Check promotional validity
-    for promo in product.get("promotions", []):
+    for promo in (product.get("promotions") or []):
 
         if (
             promo.get("valid_from") is None
@@ -213,7 +251,10 @@ report = {
 }
 
 # Define output location
-output_file = Path("data/output/research_report.json")
+if args.data == "real":
+    output_file = Path("data/output/real_research_report.json")
+else:
+    output_file = Path("data/output/research_report.json")
 
 # Create output directory if necessary
 output_file.parent.mkdir(parents=True, exist_ok=True)
